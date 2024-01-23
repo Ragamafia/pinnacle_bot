@@ -1,18 +1,24 @@
+import asyncio
+import logging
+
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters.command import Command
+
 import config
 
-from aiogram import Bot, Dispatcher, executor, types
+
+#logging.basicConfig(level=logging.INFO)   # Логирование
 
 bot = Bot(token=config.TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.answer("Hello!")
 
-@dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
-
+async def main():
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
-
-
+    asyncio.run(main())
 
